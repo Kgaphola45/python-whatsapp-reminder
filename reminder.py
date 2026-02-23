@@ -47,9 +47,18 @@ def main():
 
     while True:
         now = datetime.now().strftime("%H:%M")
+        current_minute = datetime.now().minute
         for reminder in reminders:
-            if reminder["time"] == now:
+            time_str = reminder["time"]
+            if time_str == now:
                 send_whatsapp(reminder["message"], reminder["phone"])
+            elif time_str.startswith("*/"):
+                try:
+                    interval = int(time_str[2:])
+                    if current_minute % interval == 0:
+                        send_whatsapp(reminder["message"], reminder["phone"])
+                except ValueError:
+                    pass
         # Wait 60 seconds before checking again
         time.sleep(60)
 
