@@ -45,6 +45,21 @@ def main():
     print("⏰ WhatsApp Reminder Script Started")
     reminders = load_reminders()
 
+    # Send a startup confirmation message with the list of reminders
+    phone_reminders = {}
+    for r in reminders:
+        if r["phone"] not in phone_reminders:
+            phone_reminders[r["phone"]] = []
+        phone_reminders[r["phone"]].append(r)
+        
+    for phone, user_rems in phone_reminders.items():
+        summary_msg = "🤖 *Reminder Bot Started!*\nHere is what I'm watching for:\n"
+        for r in user_rems:
+            summary_msg += f"• '{r['message']}' at {r['time']}\n"
+        send_whatsapp(summary_msg.strip(), phone)
+
+    print("✅ Startup notifications sent. Entering main loop...")
+
     while True:
         now = datetime.now()
         now_time = now.strftime("%H:%M")
