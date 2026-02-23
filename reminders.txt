@@ -1,1 +1,9 @@
+# Format: Message | Time_Rule | Phone Number
+# Examples of Time_Rule:
+# "14:30"             (Every day at 2:30 PM)
+# "*/3"               (Every 3 minutes)
+# "Monday 09:00"      (Every Monday at 9:00 AM)
+# "2026-05-14 15:00"  (One-time specific date and time)
+
 Drink water! | */3 | +27792939152
+Review finances | Friday 17:00 | +27792939152

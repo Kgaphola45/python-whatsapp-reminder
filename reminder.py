@@ -46,11 +46,21 @@ def main():
     reminders = load_reminders()
 
     while True:
-        now = datetime.now().strftime("%H:%M")
-        current_minute = datetime.now().minute
+        now = datetime.now()
+        now_time = now.strftime("%H:%M")
+        now_day = now.strftime("%A")        # e.g., "Monday"
+        now_date = now.strftime("%Y-%m-%d") # e.g., "2026-05-14"
+        current_minute = now.minute
+
         for reminder in reminders:
             time_str = reminder["time"]
-            if time_str == now:
+            
+            # Check for matches
+            if time_str == now_time:
+                send_whatsapp(reminder["message"], reminder["phone"])
+            elif time_str == f"{now_day} {now_time}":
+                send_whatsapp(reminder["message"], reminder["phone"])
+            elif time_str == f"{now_date} {now_time}":
                 send_whatsapp(reminder["message"], reminder["phone"])
             elif time_str.startswith("*/"):
                 try:
@@ -59,6 +69,7 @@ def main():
                         send_whatsapp(reminder["message"], reminder["phone"])
                 except ValueError:
                     pass
+        
         # Wait 60 seconds before checking again
         time.sleep(60)
 
